@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
 
 require 'nrcmd'
+
+Nrcmd::CLI.start
