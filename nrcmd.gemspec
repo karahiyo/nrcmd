@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Nrcmd::VERSION
   spec.authors       = ["Yusuke Shimizu"]
   spec.email         = ["a.ryuklnm@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{A command line tool for NewRelic.}
+  spec.description   = %q{A command line tool for NewRelic. }
   spec.homepage      = ""
   spec.license       = "MIT"
 
