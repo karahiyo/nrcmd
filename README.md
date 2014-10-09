@@ -20,7 +20,10 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+$ nrcmd help
+$ export NR_API_KEY=********** && nrcmd list-servers
+```
 
 ## Contributing
 
