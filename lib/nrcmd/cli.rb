@@ -12,7 +12,7 @@ module Nrcmd
 
     def initialize(*args)
       super
-      @conf = eval File.read "#{Dir::pwd}/config.rb"
+      get_conf !!options["config"] ? options["config"] : "#{Dir.pwd}/config.rb"
     end
 
     desc "nrcmd help", ""
@@ -22,8 +22,6 @@ module Nrcmd
 
     desc "nrcmd list_appid", ""
     def list_appid
-      get_conf(options["config"]) if options["config"]
-
       uri = URI.parse('https://api.newrelic.com/v2/applications.json')
       https = Net::HTTP.new(uri.host, uri.port)
       https.use_ssl = true
