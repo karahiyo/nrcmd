@@ -21,8 +21,7 @@ Or install it yourself as:
 ## Usage
 
 ```
-$ nrcmd help
-$ export NR_API_KEY=********** && nrcmd list-servers
+$ nrcmd list-apps --config /path/to/config_file
 ```
 
 ## Contributing
