@@ -5,17 +5,25 @@ require 'json'
 
 module Nrcmd
   class CLI < Thor
+    class_option :config, :type => :string
+    class_option :verbose, :type => :boolean
+
     default_command :help
+
     def initialize(*args)
       super
-      get_conf
+      @conf = eval File.read "#{Dir::pwd}/config.rb"
     end
+
     desc "nrcmd help", ""
     def help
-      p "nrcmd <action> [service_name] [params] [option]"
+      p "no help ..."
     end
+
     desc "nrcmd list_appid", ""
     def list_appid
+      get_conf(options["config"]) if options["config"]
+
       uri = URI.parse('https://api.newrelic.com/v2/applications.json')
       https = Net::HTTP.new(uri.host, uri.port)
       https.use_ssl = true
@@ -32,8 +40,8 @@ module Nrcmd
     end
 
     private
-    def get_conf
-      @conf = eval File.read "#{Dir::pwd}/config.rb"
+    def get_conf(conf_path)
+      @conf = eval File.read "#{conf_path}"
     end
   end
 end
