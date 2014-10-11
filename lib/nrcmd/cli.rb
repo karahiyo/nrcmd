@@ -1,11 +1,9 @@
 require 'thor'
-require 'net/http'
-require 'uri'
-require 'json'
 
 module Nrcmd
 
-  autoload :Config, 'nrcmd/config'
+  autoload :Config,     'nrcmd/config'
+  autoload :JSON,       'json'
 
   class CLI < Thor
     class_option :config, :type => :string
@@ -23,8 +21,8 @@ module Nrcmd
       p "no help ..."
     end
 
-    desc "nrcmd list_appids", ""
-    def list_appids
+    desc "nrcmd list_apps", ""
+    def list_apps
       uri = URI.parse('https://' + 'api.newrelic.com' + '/v2' + '/applications.json')
       https = Net::HTTP.new(uri.host, uri.port)
       https.use_ssl = true
@@ -34,7 +32,7 @@ module Nrcmd
       }
       if res.code == '200'
         result = JSON.parse(res.body)
-        p result
+        print JSON[ result["applications"] ]
       else
         p "OMG!! #{res.code} #{res.message}"
       end
