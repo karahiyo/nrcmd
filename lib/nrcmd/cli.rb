@@ -24,12 +24,7 @@ module Nrcmd
       Nrcmd.log_level = (!!options["verbose"] ? "DEBUG" : "INFO")
     end
 
-    desc "help", ""
-    def help
-      p "no help ..."
-    end
-
-    desc "list_apps", "list applications"
+    desc "list_apps", "list your applications"
     long_desc <<-LONGDESC
     with --filter, -f option, filtering applications by `name`, `ids`, `language`.
 
@@ -48,7 +43,7 @@ module Nrcmd
         print JSON[ result["applications"] ]
     end
 
-    desc "list_servers", "list servers."
+    desc "list_servers", "list your servers."
     long_desc <<-LONGDESC
     with --filter, -f option, filtering applications by `name`, `ids`, `labels`.
 
@@ -67,7 +62,7 @@ module Nrcmd
         print JSON[ result["servers"] ]
     end
 
-    desc "show_app <app_id>", ""
+    desc "show_app <app_id>", "show summary data of a application."
     long_desc <<-LONGDESC
     https://rpm.newrelic.com/api/explore/applications/show
     LONGDESC
@@ -78,7 +73,7 @@ module Nrcmd
       print JSON[ result["application"]]
     end
 
-    desc "show_server <server_id>", ""
+    desc "show_server <server_id>", "show summary data of a server."
     long_desc <<-LONGDESC
     https://rpm.newrelic.com/api/explore/servers/show
     LONGDESC
@@ -89,9 +84,10 @@ module Nrcmd
       print JSON[ result["server"]]
     end
 
-    desc "update_app <app_id> <json_param>", ""
+    desc "update_app <app_id> <json_param>", "update application setting."
     long_desc <<-LONGDESC
     sample json parameter
+
     ```
     {"application": {"name": "string"}}
     ```
