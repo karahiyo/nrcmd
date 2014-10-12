@@ -17,8 +17,7 @@ module Nrcmd
         if res.code == '200'
           return res
         else
-          p "OMG!! #{res.code} #{res.message}"
-          exit
+          error_message(res)
         end
       end
 
@@ -36,9 +35,14 @@ module Nrcmd
         if res.code == '200'
           return res
         else
-          p "OMG!! #{res.code} #{res.message}"
-          exit
+          error_message(res)
         end
+      end
+
+      private
+      def error_message(res)
+          print "OMG!! #{res.code} #{res.message}"
+          exit
       end
     end
   end
