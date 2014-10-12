@@ -14,8 +14,8 @@ module Nrcmd
 
     URL = 'https://api.newrelic.com/v2'
 
-    class_option :config, :type => :string, :aliases => "c"
-    class_option :verbose, :type => :boolean, :aliases => "v"
+    class_option :config, :type => :string, :aliases => "-c"
+    class_option :verbose, :type => :boolean, :aliases => "-v"
 
     default_command :help
     def initialize(*args)
@@ -24,32 +24,97 @@ module Nrcmd
       Nrcmd.log_level = (!!options["verbose"] ? "DEBUG" : "INFO")
     end
 
-    desc "nrcmd help", ""
+    desc "help", ""
     def help
       p "no help ..."
     end
 
-    desc "nrcmd list_apps", ""
-    def list_apps
-      uri = URL + '/applications.json'
-      res = Nrcmd::Http.get(uri)
-      result = JSON.parse(res.body)
-      print JSON[ result["applications"] ]
+    desc "list_apps", "list applications"
+    long_desc <<-LONGDESC
+    with --filter, -f option, filtering applications by `name`, `ids`, `language`.
+
+    https://rpm.newrelic.com/api/explore/applications/list
+    LONGDESC
+    option :filter, :type => :string, :aliases => '-f', :default => ""
+      def list_apps()
+        uri = URL + '/applications.json'
+        filter_param = ""
+        options["filter"].gsub(" ", "").split(',').each do |filter|
+          fkv = filter.split('=')
+          filter_param << "filter[#{fkv[0]}]=#{fkv[1]}&"
+        end
+        res = Nrcmd::Http.get(uri, {}, filter_param)
+        result = JSON.parse(res.body)
+        print JSON[ result["applications"] ]
     end
 
-    desc "nrcmd list_servers", ""
-    def list_servers
-      uri = URL + '/servers.json'
-      res = Nrcmd::Http.get(uri)
-      result = JSON.parse(res.body)
-      print JSON[ result["servers"] ]
+    desc "list_servers", "list servers."
+    long_desc <<-LONGDESC
+    with --filter, -f option, filtering applications by `name`, `ids`, `labels`.
+
+    https://rpm.newrelic.com/api/explore/servers/list
+    LONGDESC
+    option :filter, :type => :string, :aliases => '-f', :default => ""
+      def list_servers
+        uri = URL + '/servers.json'
+        filter_param = ""
+        options["filter"].gsub(" ", "").split(',').each do |filter|
+          fkv = filter.split('=')
+          filter_param << "filter[#{fkv[0]}]=#{fkv[1]}&"
+        end
+        res = Nrcmd::Http.get(uri, {}, filter_param)
+        result = JSON.parse(res.body)
+        print JSON[ result["servers"] ]
     end
 
-    desc "nrcmd set_app_name <app_id> <app_name>", ""
-    def set_app_name(app_id, app_name)
+    desc "show_app <app_id>", ""
+    long_desc <<-LONGDESC
+    https://rpm.newrelic.com/api/explore/applications/show
+    LONGDESC
+    def show_app(app_id)
+      uri = URL + "/applications/#{app_id}.json"
+      res = Nrcmd::Http.get(uri)
+      result = JSON.parse(res.body)
+      print JSON[ result["application"]]
+    end
+
+    desc "show_server <server_id>", ""
+    long_desc <<-LONGDESC
+    https://rpm.newrelic.com/api/explore/servers/show
+    LONGDESC
+    def show_server(server_id)
+      uri = URL + "/servers/#{server_id}.json"
+      res = Nrcmd::Http.get(uri)
+      result = JSON.parse(res.body)
+      print JSON[ result["server"]]
+    end
+
+    desc "update_app <app_id> <json_param>", ""
+    long_desc <<-LONGDESC
+    sample json parameter
+    ```
+    {"application": {"name": "string"}}
+    ```
+
+    ```
+    {
+      "application": {
+        "name": "string",
+        "settings": {
+          "app_apdex_threshold": "float",
+          "end_user_apdex_threshold": "float",
+          "enable_real_user_monitoring": "boolean"
+        }
+      }
+    }
+    ```
+
+    https://rpm.newrelic.com/api/explore/applications/update
+    LONGDESC
+    def update_app(app_id, json_param)
       uri = URL + "/applications/#{app_id}.json"
       header = { 'Content-Type' => 'application/json' }
-      data = JSON[{ "application" => { "name" => app_name } }]
+      data = json_param
       res = Nrcmd::Http.put(uri, header, data)
       result = JSON.parse(res.body)
       print JSON[ result ]
