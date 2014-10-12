@@ -127,5 +127,30 @@ module Nrcmd
       result = JSON.parse(res.body)
       print JSON[ result["server"]]
     end
+
+    desc "update_server <server_id> <json_param>", "update server setting."
+    long_desc <<-LONGDESC
+    sample json parameter
+
+    ```
+    {
+      "server": {
+        "name": "string"
+      }
+    }
+    ```
+
+    https://rpm.newrelic.com/api/explore/servers/update
+    LONGDESC
+    def update_server(server_id, json_param)
+      uri = URL + "/servers/#{server_id}.json"
+      header = { 'Content-Type' => 'application/json' }
+      data = json_param
+      res = Nrcmd::Http.put(uri, header, data)
+      result = JSON.parse(res.body)
+      print JSON[ result ]
+    end
+
+
   end
 end
