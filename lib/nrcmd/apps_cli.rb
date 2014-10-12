@@ -4,6 +4,8 @@ module Nrcmd
   class Apps < Thor
     namespace :apps
 
+    URL = 'https://api.newrelic.com/v2'
+
     desc "list", "list your applications"
     long_desc <<-LONGDESC
     with --filter, -f option, filtering applications by `name`, `ids`, `language`.

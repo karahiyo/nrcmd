@@ -4,6 +4,8 @@ module Nrcmd
   class Server < Thor
     namespace :server
 
+    URL = 'https://api.newrelic.com/v2'
+
     desc "list", "list your servers."
     long_desc <<-LONGDESC
     with --filter, -f option, filtering applications by `name`, `ids`, `labels`.
