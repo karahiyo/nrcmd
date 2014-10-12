@@ -3,6 +3,8 @@ require 'active_support/core_ext/module'
 
 module Nrcmd
 
+  autoload :Apps,       'nrcmd/apps_cli'
+  autoload :Server,    'nrcmd/server_cli'
   autoload :Config,     'nrcmd/config'
   autoload :Http,       'nrcmd/http'
   autoload :JSON,       'json'
@@ -24,159 +26,8 @@ module Nrcmd
       Nrcmd.log_level = (!!options["verbose"] ? "DEBUG" : "INFO")
     end
 
-    #
-    #= Util
-    #
-
-    # TODO: configure command, set nr_api_key.
-
-    #
-    #= Applications
-    #
-
-    desc "list_apps", "list your applications"
-    long_desc <<-LONGDESC
-    with --filter, -f option, filtering applications by `name`, `ids`, `language`.
-
-    https://rpm.newrelic.com/api/explore/applications/list
-    LONGDESC
-    option :filter, :type => :string, :aliases => '-f', :default => ""
-    def list_apps()
-      uri = URL + '/applications.json'
-      filter_param = ""
-      options["filter"].gsub(" ", "").split(',').each do |filter|
-        fkv = filter.split('=')
-        filter_param << "filter[#{fkv[0]}]=#{fkv[1]}&"
-      end
-      res = Nrcmd::Http.get(uri, {}, filter_param)
-      result = JSON.parse(res.body)
-      print JSON[ result["applications"] ]
-    end
-
-    desc "show_app <app_id>", "show summary data of a application."
-    long_desc <<-LONGDESC
-    https://rpm.newrelic.com/api/explore/applications/show
-    LONGDESC
-    def show_app(app_id)
-      uri = URL + "/applications/#{app_id}.json"
-      res = Nrcmd::Http.get(uri)
-      result = JSON.parse(res.body)
-      print JSON[ result["application"]]
-    end
-
-    desc "update_app <app_id> <json_param>", "update application setting."
-    long_desc <<-LONGDESC
-    `$ nrcmd update_app <app_id> '{"application": {"name": "rename_app_name"}}'
-
-    sample json parameter
-
-    ```
-    {"application": {"name": "string"}}
-    ```
-
-    ```
-    {
-      "application": {
-        "name": "string",
-        "settings": {
-          "app_apdex_threshold": "float",
-          "end_user_apdex_threshold": "float",
-          "enable_real_user_monitoring": "boolean"
-        }
-      }
-    }
-    ```
-
-    https://rpm.newrelic.com/api/explore/applications/update
-    LONGDESC
-    def update_app(app_id, json_param)
-      uri = URL + "/applications/#{app_id}.json"
-      header = { 'Content-Type' => 'application/json' }
-      data = json_param
-      res = Nrcmd::Http.put(uri, header, data)
-      result = JSON.parse(res.body)
-      print JSON[ result ]
-    end
-
-    desc "delete_app <app_id>", "deletes a application and all of reported data."
-    long_desc <<-LONGDESC
-    https://rpm.newrelic.com/api/explore/applications/delete
-    LONGDESC
-    def __delete_app(id)
-      uri = URL + "/applications/#{id}.json"
-      res = Nrcmd::Http.delete(uri)
-      result = JSON.parse(res.body)
-      print JSON[ result ]
-    end
-
-
-    #
-    #= Servers
-    #
-
-    desc "list_servers", "list your servers."
-    long_desc <<-LONGDESC
-    with --filter, -f option, filtering applications by `name`, `ids`, `labels`.
-
-    https://rpm.newrelic.com/api/explore/servers/list
-    LONGDESC
-    option :filter, :type => :string, :aliases => '-f', :default => ""
-    def list_servers
-      uri = URL + '/servers.json'
-      filter_param = ""
-      options["filter"].gsub(" ", "").split(',').each do |filter|
-        fkv = filter.split('=')
-        filter_param << "filter[#{fkv[0]}]=#{fkv[1]}&"
-      end
-      res = Nrcmd::Http.get(uri, {}, filter_param)
-      result = JSON.parse(res.body)
-      print JSON[ result["servers"] ]
-    end
-
-    desc "show_server <server_id>", "show summary data of a server."
-    long_desc <<-LONGDESC
-    https://rpm.newrelic.com/api/explore/servers/show
-    LONGDESC
-    def show_server(server_id)
-      uri = URL + "/servers/#{server_id}.json"
-      res = Nrcmd::Http.get(uri)
-      result = JSON.parse(res.body)
-      print JSON[ result["server"]]
-    end
-
-    desc "update_server <server_id> <json_param>", "update server setting."
-    long_desc <<-LONGDESC
-    sample json parameter
-
-    ```
-    {
-      "server": {
-        "name": "string"
-      }
-    }
-    ```
-
-    https://rpm.newrelic.com/api/explore/servers/update
-    LONGDESC
-    def update_server(server_id, json_param)
-      uri = URL + "/servers/#{server_id}.json"
-      header = { 'Content-Type' => 'application/json' }
-      data = json_param
-      res = Nrcmd::Http.put(uri, header, data)
-      result = JSON.parse(res.body)
-      print JSON[ result ]
-    end
-
-    desc "delete_server <server_id>", "deletes a server and all of reported data."
-    long_desc <<-LONGDESC
-    https://rpm.newrelic.com/api/explore/servers/delete
-    LONGDESC
-    def __delete_server(id)
-      uri = URL + "/servers/#{id}.json"
-      res = Nrcmd::Http.delete(uri)
-      result = JSON.parse(res.body)
-      print JSON[ result ]
-    end
+    register(Apps, 'apps', 'apps <sub-command>', 'sub-commands for Applications services')
+    register(Server, 'server', 'server <sub-command>', 'sub-commands for Servers services')
 
   end
 end
