@@ -25,7 +25,13 @@ module Nrcmd
     end
 
     #
-    #= Application
+    #= Util
+    #
+
+    # TODO: configure command, set nr_api_key.
+
+    #
+    #= Applications
     #
 
     desc "list_apps", "list your applications"
@@ -92,10 +98,20 @@ module Nrcmd
       print JSON[ result ]
     end
 
+    desc "delete_app <app_id>", "deletes a application and all of reported data."
+    long_desc <<-LONGDESC
+    https://rpm.newrelic.com/api/explore/applications/delete
+    LONGDESC
+    def __delete_app(id)
+      uri = URL + "/applications/#{id}.json"
+      res = Nrcmd::Http.delete(uri)
+      result = JSON.parse(res.body)
+      print JSON[ result ]
+    end
 
 
     #
-    #= Server
+    #= Servers
     #
 
     desc "list_servers", "list your servers."
@@ -151,6 +167,16 @@ module Nrcmd
       print JSON[ result ]
     end
 
+    desc "delete_server <server_id>", "deletes a server and all of reported data."
+    long_desc <<-LONGDESC
+    https://rpm.newrelic.com/api/explore/servers/delete
+    LONGDESC
+    def __delete_server(id)
+      uri = URL + "/servers/#{id}.json"
+      res = Nrcmd::Http.delete(uri)
+      result = JSON.parse(res.body)
+      print JSON[ result ]
+    end
 
   end
 end
