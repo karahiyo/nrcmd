@@ -36,14 +36,15 @@ module Nrcmd
     LONGDESC
     option :names, :type => :string, :aliases => '-n', :default => "", :required => true
     option :values, :type => :string
-    option :summarize, :type => :boolean, :aliases => '-s'
+    option :summarize, :type => :boolean, :aliases => '-s', :default => true
     option :from, :type => :string, :default => nil
     option :to, :type => :string, :default => nil
     def get(app_id, host_id)
       uri = URL + "/applications/#{app_id}/hosts/#{host_id}/metrics/data.json"
       filter_param = ""
       filter_param << "names[]=#{options['names']}&"
-      filter_param << "values[]=#{options['values']}&"
+      filter_param << "values[]=#{options['values']}&" if !!options['values']
+      filter_param << "summarize=#{options['summarize']}&"
       filter_param << "from=#{options["from"]}&" if !!options["from"]
       filter_param << "to=#{options["to"]}&" if !!options["to"]
       res = Nrcmd::Http.get(uri, {}, filter_param)

@@ -35,15 +35,17 @@ module Nrcmd
     https://rpm.newrelic.com/api/explore/applications/data
     LONGDESC
     option :filter, :type => :string, :aliases => '-f', :default => ""
+    option :names, :type => :string, :aliases => '-n', :required => true
+    option :values, :type => :string
+    option :summarize, :type => :boolean, :aliases => '-s', :default => true
     option :from, :type => :string, :default => nil
     option :to, :type => :string, :default => nil
     def get(id)
       uri = URL + "/applications/#{id}/metrics/data.json"
       filter_param = ""
-      options["filter"].gsub(" ", "").split(',').each do |filter|
-        fkv = filter.split('=')
-        filter_param << "#{fkv[0]}s[]=#{fkv[1]}&"
-      end
+      filter_param << "names[]=#{options['names']}&"
+      filter_param << "values[]=#{options['values']}&" if !!options['values']
+      filter_param << "summarize=#{options['summarize']}"
       filter_param << "from=#{options["from"]}&" if !!options["from"]
       filter_param << "to=#{options["to"]}&" if !!options["to"]
       res = Nrcmd::Http.get(uri, {}, filter_param)

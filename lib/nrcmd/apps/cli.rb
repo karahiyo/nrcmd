@@ -9,12 +9,6 @@ module Nrcmd
     register(Metrics, 'metrics', 'metrics <sub-command>', 'sub-commands for Applications Metrics services')
     register(Hosts, 'hosts', 'hosts <sub-command>', 'sub-commands for Applications Hosts services')
 
-    #desc 'hosts <sub-command>', 'sub-commands for Applications Hosts services'
-    #subcommand "hosts", Hosts
-
-    #desc 'metrics <sub-command>', 'sub-commands for Applications Metrics services'
-    #subcommand "metrics", Metrics
-
     URL = 'https://api.newrelic.com/v2'
 
     desc "list", "list your applications"
