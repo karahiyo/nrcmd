@@ -2,6 +2,7 @@ require 'thor'
 
 module Nrcmd
   class Apps < Thor
+    namespace :apps
 
     Nrcmd.autoload :Metrics,      'nrcmd/apps/metrics'
     Nrcmd.autoload :Hosts,        'nrcmd/apps/hosts/cli'
@@ -18,7 +19,7 @@ module Nrcmd
     https://rpm.newrelic.com/api/explore/applications/list
     LONGDESC
     option :filter, :type => :string, :aliases => '-f', :default => ""
-    def list()
+    def list
       uri = URL + '/applications.json'
       filter_param = ""
       options["filter"].gsub(" ", "").split(',').each do |filter|

@@ -5,6 +5,7 @@ module Nrcmd
 
   autoload :Apps,       'nrcmd/apps/cli'
   autoload :Server,     'nrcmd/server/cli'
+  autoload :User,       'nrcmd/users_cli'
   autoload :Config,     'nrcmd/util/config'
   autoload :Http,       'nrcmd/util/http'
   autoload :JSON,       'json'
@@ -20,8 +21,9 @@ module Nrcmd
     class_option :config, :type => :string, :aliases => "-c"
     class_option :verbose, :type => :boolean, :aliases => "-v"
 
-    register(Apps, 'apps', 'apps <sub-command>', 'sub-commands for Applications services')
-    register(Server, 'server', 'server <sub-command>', 'sub-commands for Servers services')
+    register(Apps, 'apps', 'apps <sub-command>', 'commands for Applications services')
+    register(Server, 'server', 'server <sub-command>', 'commands for Servers services')
+    register(User, 'user', 'user <sub-command>', 'commands for Users services')
 
     default_command :help
     def initialize(*args)
