@@ -27,7 +27,7 @@ module Nrcmd
     default_command :help
     def initialize(*args)
       super
-      Nrcmd.conf = Nrcmd::Config.load(!!options["config"] ? options["config"] : "#{Dir.pwd}/config.rb")
+      Nrcmd.conf = Nrcmd::Config.load(!!options["config"] ? options["config"] : "#{Dir.pwd}/nrcmd_config.rb")
       Nrcmd.log_level = (!!options["verbose"] ? "DEBUG" : "INFO")
     end
   end
