@@ -2,12 +2,17 @@ require 'thor'
 
 module Nrcmd
   class Server < Thor
+    namespace :server
+
+    Nrcmd.autoload :Metrics,      'nrcmd/server/metrics'
+
+    register(Metrics, 'metrics', 'metrics <sub-command>', 'sub-commands for Servers Metrics services')
 
     URL = 'https://api.newrelic.com/v2'
 
     desc "list", "list your servers."
     long_desc <<-LONGDESC
-    with --filter, -f option, filtering applications by `name`, `ids`, `labels`.
+    with --filter, -f option, filtering servers by `name`, `ids`, `labels`.
 
     https://rpm.newrelic.com/api/explore/servers/list
     LONGDESC
