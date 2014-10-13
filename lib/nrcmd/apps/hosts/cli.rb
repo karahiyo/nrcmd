@@ -1,7 +1,11 @@
 require 'thor'
 
 module Nrcmd
-  class Hosts < Thor
+  class Apps::Hosts < Thor
+    namespace 'apps hosts'
+
+    Nrcmd.autoload :Metrics,      'nrcmd/apps/hosts/metrics'
+    register(Metrics, 'metrics', 'metrics <sub-command>', 'sub-commands for Application Hosts Metrics services')
 
     URL = 'https://api.newrelic.com/v2'
 
@@ -36,6 +40,9 @@ module Nrcmd
       res = Nrcmd::Http.get(uri)
       result = JSON.parse(res.body)
       print JSON[ result["application_host"]]
+    end
+    def self.banner(task, namespace = false, subcommand = true)
+      super
     end
   end
 end

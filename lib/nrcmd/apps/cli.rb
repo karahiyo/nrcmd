@@ -4,7 +4,7 @@ module Nrcmd
   class Apps < Thor
 
     Nrcmd.autoload :Metrics,      'nrcmd/apps/metrics_cli'
-    Nrcmd.autoload :Hosts,        'nrcmd/apps/hosts_cli'
+    Nrcmd.autoload :Hosts,        'nrcmd/apps/hosts/cli'
 
     register(Metrics, 'metrics', 'metrics <sub-command>', 'sub-commands for Applications Metrics services')
     register(Hosts, 'hosts', 'hosts <sub-command>', 'sub-commands for Applications Hosts services')
