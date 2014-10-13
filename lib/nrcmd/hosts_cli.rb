@@ -6,7 +6,7 @@ module Nrcmd
 
     URL = 'https://api.newrelic.com/v2'
 
-    desc "list", "list your hosts associated with the given app_id."
+    desc "list <app_id>", "list your hosts associated with the given app_id."
     long_desc <<-LONGDESC
     This API endpoint returns a paginated list of hosts associated with the given application.
     Application hosts can be filtered by hostname, or the list of application host IDs.
