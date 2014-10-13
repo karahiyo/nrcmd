@@ -3,7 +3,7 @@ require 'thor'
 module Nrcmd
   class Apps < Thor
 
-    Nrcmd.autoload :Metrics,      'nrcmd/apps/metrics_cli'
+    Nrcmd.autoload :Metrics,      'nrcmd/apps/metrics'
     Nrcmd.autoload :Hosts,        'nrcmd/apps/hosts/cli'
 
     register(Metrics, 'metrics', 'metrics <sub-command>', 'sub-commands for Applications Metrics services')
