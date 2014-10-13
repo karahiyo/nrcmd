@@ -2,10 +2,18 @@ require 'thor'
 
 module Nrcmd
   class Apps < Thor
-    namespace :apps
 
-    autoload :Metrics,      'nrcmd/apps_metrics_cli'
+    Nrcmd.autoload :Metrics,      'nrcmd/apps/metrics_cli'
+    Nrcmd.autoload :Hosts,        'nrcmd/apps/hosts_cli'
+
     register(Metrics, 'metrics', 'metrics <sub-command>', 'sub-commands for Applications Metrics services')
+    register(Hosts, 'hosts', 'hosts <sub-command>', 'sub-commands for Applications Hosts services')
+
+    #desc 'hosts <sub-command>', 'sub-commands for Applications Hosts services'
+    #subcommand "hosts", Hosts
+
+    #desc 'metrics <sub-command>', 'sub-commands for Applications Metrics services'
+    #subcommand "metrics", Metrics
 
     URL = 'https://api.newrelic.com/v2'
 

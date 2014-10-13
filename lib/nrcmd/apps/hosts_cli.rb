@@ -2,7 +2,6 @@ require 'thor'
 
 module Nrcmd
   class Hosts < Thor
-    namespace :hosts
 
     URL = 'https://api.newrelic.com/v2'
 

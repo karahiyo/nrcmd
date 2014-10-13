@@ -2,7 +2,6 @@ require 'thor'
 
 module Nrcmd
   class Server < Thor
-    namespace :server
 
     URL = 'https://api.newrelic.com/v2'
 

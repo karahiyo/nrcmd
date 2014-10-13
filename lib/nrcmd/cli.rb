@@ -3,11 +3,10 @@ require 'active_support/core_ext/module'
 
 module Nrcmd
 
-  autoload :Apps,       'nrcmd/apps_cli'
-  autoload :Server,     'nrcmd/server_cli'
-  autoload :Hosts,      'nrcmd/hosts_cli'
-  autoload :Config,     'nrcmd/config'
-  autoload :Http,       'nrcmd/http'
+  autoload :Apps,       'nrcmd/apps/cli'
+  autoload :Server,     'nrcmd/server/cli'
+  autoload :Config,     'nrcmd/util/config'
+  autoload :Http,       'nrcmd/util/http'
   autoload :JSON,       'json'
   autoload :PP,         'pp'
 
@@ -21,9 +20,8 @@ module Nrcmd
     class_option :config, :type => :string, :aliases => "-c"
     class_option :verbose, :type => :boolean, :aliases => "-v"
 
-    register(Apps, 'apps', 'apps <sub-command>', 'sub-commands for Applications services')
-    register(Server, 'server', 'server <sub-command>', 'sub-commands for Servers services')
-    register(Hosts, 'hosts', 'hosts <sub-command>', 'sub-commands for Application Hosts services')
+    Nrcmd.register(Apps, 'apps', 'apps <sub-command>', 'sub-commands for Applications services')
+    Nrcmd.register(Server, 'server', 'server <sub-command>', 'sub-commands for Servers services')
 
     default_command :help
     def initialize(*args)
@@ -41,4 +39,8 @@ module Nrcmd
     end
 
   end
+end
+
+if __FILE__ == $0
+  Nrcmd.start
 end
