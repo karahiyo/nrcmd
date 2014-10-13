@@ -4,6 +4,9 @@ module Nrcmd
   class Apps < Thor
     namespace :apps
 
+    autoload :Metrics,      'nrcmd/apps_metrics_cli'
+    register(Metrics, 'metrics', 'metrics <sub-command>', 'sub-commands for Applications Metrics services')
+
     URL = 'https://api.newrelic.com/v2'
 
     desc "list", "list your applications"
@@ -77,25 +80,6 @@ module Nrcmd
     def __delete(id)
       uri = URL + "/applications/#{id}.json"
       res = Nrcmd::Http.delete(uri)
-      result = JSON.parse(res.body)
-      print JSON[ result ]
-    end
-
-    desc "metrics <app_id>", "show a list of known metrics and their value names for the given resource."
-    long_desc <<-LONGDESC
-    Return a list of known metrics and their value names for the given resource.
-
-    https://rpm.newrelic.com/api/explore/applications/names
-    LONGDESC
-    option :filter, :type => :string, :aliases => '-f', :default => ""
-    def metrics(id)
-      uri = URL + "/applications/#{id}/metrics.json"
-      filter_param = ""
-      options["filter"].gsub(" ", "").split(',').each do |filter|
-        fkv = filter.split('=')
-        filter_param << "#{fkv[0]}=#{fkv[1]}&"
-      end
-      res = Nrcmd::Http.get(uri, {}, filter_param)
       result = JSON.parse(res.body)
       print JSON[ result ]
     end
