@@ -20,8 +20,8 @@ module Nrcmd
     class_option :config, :type => :string, :aliases => "-c"
     class_option :verbose, :type => :boolean, :aliases => "-v"
 
-    Nrcmd.register(Apps, 'apps', 'apps <sub-command>', 'sub-commands for Applications services')
-    Nrcmd.register(Server, 'server', 'server <sub-command>', 'sub-commands for Servers services')
+    register(Apps, 'apps', 'apps <sub-command>', 'sub-commands for Applications services')
+    register(Server, 'server', 'server <sub-command>', 'sub-commands for Servers services')
 
     default_command :help
     def initialize(*args)
